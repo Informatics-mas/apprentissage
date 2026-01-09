@@ -1,32 +1,59 @@
 function getcomputerchoice() {
-  let choice = Math.floor(Math.random() * 3);
-  if (choice === 0) {
-    return "rock";
-  } else if (choice === 1) {
-    return "paper";
-  } else {
-    return "scissors";
-  }
+    let choice = Math.floor(Math.random() * 3);
+    if (choice === 0) {
+        return "rock";
+    } else if (choice === 1) {
+        return "paper";
+    } else {
+        return "scissors";
+    }
 }
 
-let playerchoice = prompt("Enter your choice (rock, paper, scissors):");
-if (playerchoice !== null && playerchoice.trim() !== "") {
-  console.log(playerchoice);
-} else {
-  console.log("Aucun mot saisi");
-  playerchoice = prompt("Enter your choice (rock, paper, scissors):");
+function playerchoice() {
+    let player = prompt("Enter your choice (rock, paper, scissors):");
+    if (player !== null && player.trim() !== "") {
+        return player.toLowerCase().trim();
+    } else {
+        return null;
+    }
 }
 
+function playgame() {
+    let player = playerchoice();        // ✅ nom corrigé
+    let computerchoice = getcomputerchoice();
+    let result = "";
 
-let computerchoice = getcomputerchoice();
-if (playerchoice === computerchoice) {
-  console.log("It's a tie!");
-} else if (
-  (playerchoice === "rock" && computerchoice === "scissors") ||
-  (playerchoice === "paper" && computerchoice === "rock") ||
-  (playerchoice === "scissors" && computerchoice === "paper")
-) {
-  console.log("You win!");
-} else {
-  console.log("Computer wins!");
+    if (player === null) {
+        return "Invalid input";
+    }
+
+    console.log("Player choice: " + player);
+    console.log("Computer choice: " + computerchoice);
+
+    if (player === computerchoice) {
+        result = "It's a tie!";
+    } else if (
+        (player === "rock" && computerchoice === "scissors") ||
+        (player === "paper" && computerchoice === "rock") ||
+        (player === "scissors" && computerchoice === "paper")
+    ) {
+        result = "You win!";
+    } else {
+        result = "Computer wins!";
+    }
+
+    return result;
 }
+
+function playround() {
+    let finalresult = [];
+
+    for (let i = 0; i < 5; i++) {
+        let gameResult = playgame();   // ✅ appelé une seule fois
+        console.log(gameResult);
+        finalresult.push(gameResult);
+    }
+    return finalresult;
+}
+
+console.log(playround());
