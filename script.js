@@ -1,59 +1,97 @@
 function getcomputerchoice() {
-    let choice = Math.floor(Math.random() * 3);
-    if (choice === 0) {
-        return "rock";
-    } else if (choice === 1) {
-        return "paper";
-    } else {
-        return "scissors";
-    }
+    const choices = ["rock", "paper", "scissors"];
+    return choices[Math.floor(Math.random() * 3)];
 }
 
+let playerchoi = "";
+const count = { player: 0, computer: 0, tie: 0 };
+let round = 1;
+
+const container = document.querySelector("#container");
+const roundDisplay = document.querySelector("#round");
+
+// score et reset
+const score = document.createElement("p");
+container.appendChild(score);
+
+const resetBtn = document.createElement("button");
+resetBtn.textContent = "Reset";
+resetBtn.style.display = "none";
+container.appendChild(resetBtn);
+
+function updateScore() {
+    score.textContent = `Player: ${count.player} | Computer: ${count.computer} | Tie: ${count.tie}`;
+}
+
+function disableButtons() {
+    // désactiver uniquement les boutons de jeu
+    buttons.forEach(btn => btn.disabled = true);
+
+    // garder le reset visible et activé
+    resetBtn.style.display = "inline-block";
+    resetBtn.disabled = false; // FIX : s’assurer qu’il est cliquable
+}
+
+
+resetBtn.addEventListener("click", () => {
+    location.reload(); // FIX : recharge la page
+});
+
+
+const buttons = document.querySelectorAll("button");
+
 function playerchoice() {
-    let player = prompt("Enter your choice (rock, paper, scissors):");
-    if (player !== null && player.trim() !== "") {
-        return player.toLowerCase().trim();
-    } else {
-        return null;
-    }
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            if (count.player < 5 && count.computer < 5) {
+                playerchoi = button.id;
+                playgame();
+            }
+        });
+    });
 }
 
 function playgame() {
-    let player = playerchoice();        // ✅ nom corrigé
-    let computerchoice = getcomputerchoice();
+    const computerchoice = getcomputerchoice();
     let result = "";
 
-    if (player === null) {
-        return "Invalid input";
-    }
-
-    console.log("Player choice: " + player);
-    console.log("Computer choice: " + computerchoice);
-
-    if (player === computerchoice) {
-        result = "It's a tie!";
+    if (playerchoi === computerchoice) {
+        result = "tie";
+        count.tie++;
     } else if (
-        (player === "rock" && computerchoice === "scissors") ||
-        (player === "paper" && computerchoice === "rock") ||
-        (player === "scissors" && computerchoice === "paper")
+        (playerchoi === "rock" && computerchoice === "scissors") ||
+        (playerchoi === "paper" && computerchoice === "rock") ||
+        (playerchoi === "scissors" && computerchoice === "paper")
     ) {
-        result = "You win!";
+        result = "player";
+        count.player++;
     } else {
-        result = "Computer wins!";
+        result = "computer";
+        count.computer++;
     }
 
-    return result;
-}
+    // ajouter résultat du round sans effacer le précédent
+    const roundResult = document.createElement("p");
+    roundResult.textContent = `Round ${round} → Player: ${playerchoi} | Computer: ${computerchoice} | Winner: ${result}`;
+    roundResult.style.animation = "fade 0.4s ease-in-out";
+    container.appendChild(roundResult);
 
-function playround() {
-    let finalresult = [];
+    updateScore();
 
-    for (let i = 0; i < 5; i++) {
-        let gameResult = playgame();   // ✅ appelé une seule fois
-        console.log(gameResult);
-        finalresult.push(gameResult);
+    // vérifier victoire finale
+    if (count.player === 5 || count.computer === 5) {
+        const winner = count.player === 5 ? "player" : "computer";
+        const p = document.createElement("h2");
+        p.textContent = `${winner} wins the game 🏆`;
+        container.appendChild(p);
+        disableButtons();
     }
-    return finalresult;
+
+    // incrémenter le round
+    round++;
+    roundDisplay.textContent = "Round : " + round;
 }
 
-console.log(playround());
+// Lancer le jeu
+playerchoice();
+updateScore();

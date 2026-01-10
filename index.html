@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <script src="script.js"></script>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <h1>Let's play Rock Paper Scissors</h1>
+        <div id="container">
+            <button id="rock">Rock</button> <button id="paper">Paper</button> <button id="scissors">Scissors</button>
+            <div class="result">
+
+            </div>
+        </div>
+        <style>
+            #container p {
+                animation: fade 0.4s ease-in-out;
+            }
+
+            body{
+                font-family: Arial, sans-serif;
+                text-align: center;
+                align-content: center;
+                background-color: #f0f0f0;
+                margin: 0;
+                padding: 20px;
+            }
+
+            button {
+                transition: transform 0.2s ease;
+                font-size: 16px;
+                background-color: #042e8a;
+                border: none;
+                border-radius: 5px;
+            }
+
+            button:active {
+                transform: scale(0.9);
+            }
+
+            @keyframes fade {
+                from {
+                    opacity: 0;
+                    transform: translateY(5px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+        <script src="script.js"></script>
+    </body>
 </html>
